@@ -1,0 +1,61 @@
+This repository includes the model used for C. J. Bierson, F. Nimmo, 
+and S. A Stern, Evidence for a hot start and early ocean on Pluto, 
+Nature Astronomy, 2020. This is a thermal model for Pluto that
+includes heat production from long-lived radioactive elements and
+can be initialized with either an ice shell or liquid ocean. The 
+numerical methods are described in Bierson et al. 2018 
+https://doi.org/10.1016/j.icarus.2018.03.007
+
+You are welcome to use or adapt this code providing you cite
+C. J. Bierson, F. Nimmo, and S. A Stern, Evidence for a hot start 
+and early ocean on Pluto, Nature Astronomy, 2020
+
+You can compile this code with the gcc fortran compiler via:
+gfortran IceTherm_HotStart.f -O3 -o IceTherm
+
+To run this code set the approite values in the input file
+"IceTherm.inp". Layers in the ice shell should be <~2 km to 
+prevent numerical problems when refreezing. 
+
+
+To run the code use 
+./IceTherm
+The included example input takes approximately 3 minutes to run on 
+a 3 GHz processor.
+
+This will produce the ascii file output "IceTherm.out".
+
+Explanation of input file values:
+Radius - radius of the body in km
+Core radius - radius of the core in km
+Nodes ice - number of numerical grid points ot use within the ice shell
+Nodes core - number of numerical grid points ot use within the core
+Core heating - factor to scale the radioactive heating by (1.0 is chondritic)
+Stop Time (yr) - amount of time to run model for in years
+Max Time step (s) - maximum size of time steps in seconds. If this value is very large the time step will be limited by the CFL condition.
+Cp ice - specific heat of ice shell J/(kg K)
+Cp core - specific heat of the core J/(kg K)
+Cond ice - thermal conductivity of the ice (W/(m K)). Note that this value is ignored if CONDT=True (see below)
+Cond core - thermal conductivity of the core (W/(m K)).
+Ice density - density of the ice shell kg/m^3. Note that the density of the ocean is always 1000 kg/m^3.
+Core density - Density of the core kg/m^3
+Melt T - Temperature at which the ice melts (K). Note that this value is ignored if Fixed TMEL=False (see below)
+Surface T  - Temperature of the surface in Kelvin.
+ammoniaX  - Ammonia fraction in the ocean (not percentage). Only used Fixed TMEL=False (see below)
+Ice T initial - initial temperature in the ice shell (K). Setting to values higher than the melting temperature may lead to unexpected behavior. 
+Core T initial - initial temperature in the core (K)
+
+Logical parameters: these are specified by either a T for True or F for False
+
+CONDT - If true the thermal conductivity of the ice will be temperature dependent following 
+k=0.4685 + 488.12/T. If false the value from the input file is used
+
+Fixed TMEL - If true the melt temperature will be fixed to the value in the input. If false the pressure and ammonia dependent melting temperature from Leliwa-Kopystyński, J., Maruyama, M., Nakajima, T., 2002. The water-ammonia phase diagram up to 300 mpa: application to icy satellites. Icarus 159 (2), 518–528.https://doi.org/10.1006/icar.2002.6932.
+
+CONSERVEMASS - If false the radius of each node is fixed regardless of density changes. This means that as the density changes (due to melting/freezing) the mass of the body is not conserved. If true mass is conserved and the location of the nodes shifts accordingly. Setting to false will significantly speed up the calculations.
+
+HotStart - If False the ice shell starts with an initial temperature set in the input file. If True the whole ice shell will start liquid at the melting temperature with the exception of the top 5 grid points which start at the surface temperature provided in the input file.
+
+
+
+

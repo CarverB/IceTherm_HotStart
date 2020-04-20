@@ -1,0 +1,20 @@
+Input for Ice Therm
+Body Parameters:
+Radius,	Core radius, Nodes ice, Nodes core, Core heating*, Stop Time (yr), Max Time step (s)
+1180E3,  850E3,        400,        200,      1.0,    4.5E9, 1.0E15
+Physical Paramters:
+Cp ice, Cp core, Cond ice, Cond core, Ice density, Core density
+1930, 	1053, 	 0.0, 	   3.0,       920,         3000
+Melt T, Surface T, ammoniaX, Ice T initial, Core T initial
+273.0,    40,         0.0,     200,            300
+Logical parameters:
+CONDT, Fixed TMEL, CONSERVEMASS, HotStart
+T,      F,         T,       F
+
+
+Notes:
+*relative to chondritic
+
+Cond ice is ignored if CONDT is true
+TMEL is ignored if fixedtmel is false
+ammoniaX is only used if fixedtmel is false
